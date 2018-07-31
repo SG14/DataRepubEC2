@@ -1,0 +1,149 @@
+﻿Step:
+Download AWS CLI MSI installer and install it
+https://cloudacademy.com/blog/aws-cli-a-beginners-guide/
+
+Step0:
+Go to this location and open the command line (aws cli will run from here)
+
+Step1:
+Connect to the aws server - 
+https://cloudacademy.com/blog/aws-cli-a-beginners-guide/
+
+Launch the cmd from your AWS location on your local
+aws --version
+o/p aws-cli/1.15.66 Python/2.7.9 Windows/8 botocore/1.10.65
+
+aws configure
+o/p  AWS Access Key ID [****************CS2A]: "Here you can enter your key from rootkey.csv  file which was downloaded from the aws site - Hit Enter
+o/p  AWS Secret Access Key [****************P3T8]:  "Here you can enter your secret access from rootkey.csv  file which was downloaded from the aws site - Hit Enter
+o/p  Default region name [us-east-2]: "Here you can enter your region from the aws site, I am using "us-east-2" - hit enter 
+o/p  Default output format [None]: - leave this - just hit enter
+
+
+
+
+Step2:
+aws ec2 create-security-group --group-name DataRepubDemo --description “Security group for DataRepubDemo”
+
+O/p  Group ID created: sg-07d1c362d45c00519
+
+aws ec2 create-key-pair --us-east-2 –key-name DataRepubKey1 --query “DataRepub” --output text awsclidemokey.ppk
+
+
+
+
+Step3: create the instance
+aws ec2 run-instances --image-id ami-36241f53 --count 1 --instance-type t2.micro --key-name DataRepubVM1 --security-group-ids sg-07d1c362d45c00519 --subnet-id subnet-6ebe2a14
+
+(Below is the output for the above step3 command)
+ 
+"Instances": [
+        {
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "StateReason": {
+                "Message": "pending",
+                "Code": "pending"
+            },
+            "PublicDnsName": "",
+            "Platform": "windows",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "EbsOptimized": false,
+            "LaunchTime": "2018-07-29T09:42:49.000Z",
+            "PrivateIpAddress": "172.31.22.14",
+            "ProductCodes": [],
+            "VpcId": "vpc-960e39fe",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "StateTransitionReason": "",
+            "InstanceId": "i-00abdb76be877a505",
+            "ImageId": "ami-36241f53",
+            "PrivateDnsName": "ip-172-31-22-14.us-east-2.compute.internal",
+            "KeyName": "DataRepubVM1",
+            "SecurityGroups": [
+                {
+                    "GroupName": "DataRepubDemo",
+                    "GroupId": "sg-07d1c362d45c00519"
+                }
+            ],
+            "ClientToken": "",
+            "SubnetId": "subnet-6ebe2a14",
+            "InstanceType": "t2.micro",
+            "NetworkInterfaces": [
+                {
+                    "Status": "in-use",
+                    "MacAddress": "06:7a:21:8a:e4:3c",
+                    "SourceDestCheck": true,
+                    "VpcId": "vpc-960e39fe",
+                    "Description": "",
+                    "NetworkInterfaceId": "eni-0c5aab55b8d7f0bc0",                                      "PrivateIpAddresses": [
+                        {
+                            "PrivateDnsName": "ip-172-31-22-14.us-east-2.compute.internal",
+                            "Primary": true,
+                            "PrivateIpAddress": "172.31.22.14"
+                        }
+                    ],
+                    "PrivateDnsName": "ip-172-31-22-14.us-east-2.compute.internal",
+                    "Attachment": {
+                        "Status": "attaching",
+                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "AttachmentId": "eni-attach-07939bc4e570d15f0",
+                        "AttachTime": "2018-07-29T09:42:49.000Z"
+                    },
+                    "Groups": [
+                        {
+                            "GroupName": "DataRepubDemo",
+                            "GroupId": "sg-07d1c362d45c00519"                                               }
+                    ],
+                    "Ipv6Addresses": [],
+                    "OwnerId": "597990375224",
+                    "SubnetId": "subnet-6ebe2a14",                                                      "PrivateIpAddress": "172.31.22.14"
+                }
+            ],
+            "SourceDestCheck": true,
+            "Placement": {                                                                          "Tenancy": "default",
+                "GroupName": "",
+                "AvailabilityZone": "us-east-2b"
+            },
+            "Hypervisor": "xen",
+            "BlockDeviceMappings": [],
+            "Architecture": "x86_64",
+            "RootDeviceType": "ebs",
+            "RootDeviceName": "/dev/sda1",
+            "VirtualizationType": "hvm",
+            "AmiLaunchIndex": 0
+        }
+    ],
+    "ReservationId": "r-07bd9dec16b85b835",
+    "Groups": [],
+    "OwnerId": "597990375224"
+}
+
+
+Step4: Check the status of the instance created by using instance ID which was given the o/p of step3
+
+aws ec2 describe-instance-status --instance-ids i-00abdb76be877a505
+
+Step5: Terminate the Instance
+
+aws ec2 terminate-instances --instance-ids i-00abdb76be877a505
+
+
+
+
+
+
+
+
+
+
+
+
+
